@@ -32,13 +32,12 @@ class NoisePredictor(nn.Module):
         x = x.view(-1, 512)  # Flatten the tensor
         x = F.relu(self.fc1(x))
         x = self.fc2(x)
-        x = F.sigmoid(x)
         
-        return x.mean()
+        return x.mean().abs()
 
 
 class DetectorNetwork(nn.Module):
-  def __init__(self, num_classes, backbone, out_channels=512):
+  def __init__(self, num_classes, backbone):
     super().__init__()
 
     self._input_features = 7 * 7 * backbone.feature_map_channels
@@ -233,8 +232,8 @@ def kl_div_loss(original_output, adversarial_output):
     torch.Tensor
         Scalar loss.
     """
-    original_output = F.log_softmax(original_output)
-    adversarial_output = F.softmax(adversarial_output)
+    original_output = F.log_softmax(original_output, dim = -1)
+    adversarial_output = F.softmax(adversarial_output, dim = -1)
 
     Ladv = F.kl_div(original_output, adversarial_output, reduction='batchmean')
     return Ladv
