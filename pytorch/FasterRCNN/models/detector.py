@@ -122,10 +122,12 @@ class DetectorNetwork(nn.Module):
       # Update roi_out_noise
       rois_noise[n_roi] = rois[n_roi] + noise
       
+    # Uncomment to see the RoI with and without noise
+    """
     if (len(rois) != 0 or len(rois_noise) != 0):
       save_image(self.conv2(rois_noise[0]).cpu(), 'roi_noise.png')
           
-      save_image(self.conv2(rois[0]).cpu(), 'roi_out.png')
+      save_image(self.conv2(rois[0]).cpu(), 'roi_out.png')"""
     
     ####################################
     #                                  #
