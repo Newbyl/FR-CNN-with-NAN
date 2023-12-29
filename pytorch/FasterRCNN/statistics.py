@@ -26,13 +26,16 @@ class TrainingStatistics:
     self._detector_class_losses = []
     self._detector_regression_losses = []
     
+    
     # We add the noise loss for statistics
     
     self.detector_class_loss_noise = float("inf")
     self.detector_regression_loss_noise = float("inf")
+    self.detector_kl_div_loss = float("inf")
     
     self._detector_class_losses_noise = []
     self._detector_regression_losses_noise = []
+    self._detector_kl_div_losses = []
 
   def on_training_step(self, loss):
     """
@@ -57,9 +60,11 @@ class TrainingStatistics:
     
     self._detector_class_losses_noise.append(loss.detector_class_noise)
     self._detector_regression_losses_noise.append(loss.detector_regression_noise)
+    self._detector_kl_div_losses.append(loss.detector_kl_div)
     
     self.detector_class_loss_noise = np.mean(self._detector_class_losses_noise)
     self.detector_regression_loss_noise = np.mean(self._detector_regression_losses_noise)
+    self.detector_kl_div_loss = np.mean(self._detector_kl_div_losses)
 
   def get_progbar_postfix(self):
     """
@@ -76,7 +81,8 @@ class TrainingStatistics:
       "detector_regr_loss": "%1.4f" % self.detector_regression_loss,
       "detector_class_loss_noise": "%1.4f" % self.detector_class_loss_noise, # We add the noise loss for statistics
       "detector_regr_loss_noise": "%1.4f" % self.detector_regression_loss_noise, # We add the noise loss for statistics
-      "total_loss": "%1.2f" % (self.rpn_class_loss + self.rpn_regression_loss + self.detector_class_loss + self.detector_regression_loss + (self.detector_class_loss_noise + self.detector_regression_loss_noise)) # We add the noise loss for statistics 
+      "detector_kl_div_loss": "%1.4f" % self.detector_kl_div_loss, # We add the noise loss for statistics
+      "total_loss": "%1.2f" % (self.rpn_class_loss + self.rpn_regression_loss + self.detector_class_loss + self.detector_regression_loss + (self.detector_class_loss_noise + self.detector_regression_loss_noise + self.detector_kl_div_loss)) # We add the noise loss for statistics 
     }
 
 

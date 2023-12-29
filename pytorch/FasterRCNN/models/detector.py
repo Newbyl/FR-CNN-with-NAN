@@ -19,6 +19,7 @@ from torchvision.models import vgg16
 import numpy as np
 
 
+
 class NoisePredictor(nn.Module):
     def __init__(self, roi_size=512, hidden_dim=512):
         super().__init__()
@@ -214,3 +215,26 @@ def regression_loss(predicted_box_deltas, y_true):
   N = y_true.shape[0] + epsilon
   relevant_loss_terms = y_mask * losses
   return scale_factor * t.sum(relevant_loss_terms) / N
+
+def kl_div_loss(original_output, adversarial_output):
+    """
+    Computes the kl divergence loss between the original distribution
+    and the noisy one.
+
+    Parameters
+    ----------
+    original_output : torch.Tensor
+        The output of the model for the original examples, (N, num_classes).
+    adversarial_output : torch.Tensor
+        The output of the model for the adversarial examples, (N, num_classes).
+
+    Returns
+    -------
+    torch.Tensor
+        Scalar loss.
+    """
+    original_output = F.log_softmax(original_output)
+    adversarial_output = F.softmax(adversarial_output)
+
+    Ladv = F.kl_div(original_output, adversarial_output, reduction='batchmean')
+    return Ladv

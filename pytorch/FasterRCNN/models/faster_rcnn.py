@@ -33,6 +33,7 @@ class FasterRCNNModel(nn.Module):
     detector_regression:        float
     detector_class_noise:       float
     detector_regression_noise:  float
+    detector_kl_div:            float
     total:                      float
 
   def __init__(self, num_classes, backbone, rpn_minibatch_size = 256, proposal_batch_size = 128, allow_edge_proposals = True):
@@ -351,9 +352,10 @@ class FasterRCNNModel(nn.Module):
     # We also compute the loss for the adversarial examples
     detector_class_loss_noise = detector.class_loss(predicted_classes = detector_classes_noise, y_true = gt_classes)
     detector_regression_loss_noise = detector.regression_loss(predicted_box_deltas = detector_box_deltas_noise, y_true = gt_box_deltas)
+    detector_kl_div_loss = detector.kl_div_loss(detector_classes, detector_classes_noise)
     
     # We also add the loss for the noise (between brackets)
-    total_loss = rpn_class_loss + rpn_regression_loss + detector_class_loss + detector_regression_loss + (detector_class_loss_noise + detector_regression_loss_noise)
+    total_loss = rpn_class_loss + rpn_regression_loss + detector_class_loss + detector_regression_loss + (detector_class_loss_noise + detector_regression_loss_noise + detector_kl_div_loss)
     loss = FasterRCNNModel.Loss(
       rpn_class = rpn_class_loss.detach().cpu().item(),
       rpn_regression = rpn_regression_loss.detach().cpu().item(),
@@ -361,6 +363,7 @@ class FasterRCNNModel(nn.Module):
       detector_regression = detector_regression_loss.detach().cpu().item(),
       detector_class_noise = detector_class_loss_noise.detach().cpu().item(),
       detector_regression_noise = detector_regression_loss_noise.detach().cpu().item(),
+      detector_kl_div = detector_kl_div_loss.detach().cpu().item(),
       total = total_loss.detach().cpu().item()
     )
 
