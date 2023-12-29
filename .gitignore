@@ -16,6 +16,8 @@ venv
 *.swp
 
 VOCdevkit/
+VOCdevkit_bruit/
+VOCdevkit_bruité/
 
 pytorch_venv
 

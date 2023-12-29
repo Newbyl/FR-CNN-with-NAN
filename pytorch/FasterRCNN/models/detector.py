@@ -17,6 +17,9 @@ from torchvision.ops import RoIPool
 from torchvision.models import vgg16
 
 import numpy as np
+import torchvision.transforms as T
+from torchvision.utils import save_image
+
 
 
 
@@ -50,6 +53,8 @@ class DetectorNetwork(nn.Module):
     
     # Define the noise predictor
     self._noise_predictor = NoisePredictor()
+    # define conv layer to concatenate roi_out and roi_out_noise
+    self.conv2 = nn.Conv2d(512, 3, kernel_size=1, padding=0)
     
     # Initialize weights
     self._classifier.weight.data.normal_(mean = 0.0, std = 0.01)
@@ -109,16 +114,19 @@ class DetectorNetwork(nn.Module):
     for n_roi in range(nb_roi):
       # generate noise
       noise_scale = self._noise_predictor(rois[n_roi]).cpu().detach().numpy()
-      
       # noise = np.random.normal(loc=0, scale=noise_scale[0], size=rois[n_roi].cpu().shape)
-    
+      
       noise = np.random.rayleigh(scale=noise_scale, size=rois[n_roi].cpu().shape)
       noise = t.from_numpy(noise).cuda()
       
       # Update roi_out_noise
       rois_noise[n_roi] = rois[n_roi] + noise
       
-
+    if (len(rois) != 0 or len(rois_noise) != 0):
+      save_image(self.conv2(rois_noise[0]).cpu(), 'roi_noise.png')
+          
+      save_image(self.conv2(rois[0]).cpu(), 'roi_out.png')
+    
     ####################################
     #                                  #
     # End of noise adversarial network #
