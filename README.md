@@ -17,7 +17,7 @@
     <a href="https://openaccess.thecvf.com/content_WACV_2020/papers/Ma_Training_with_Noise_Adversarial_Network_A_Generalization_Method_for_Object_WACV_2020_paper.pdf"><strong>Link of the paper »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Newbyl/FR-CNN-with-NAN">View Demo</a>
+    <a href="https://colab.research.google.com/drive/1kEU1wpLT1JNoSt1oW2ZMoATsHLki2aCY?usp=sharing">View Demo</a>
   </p>
 </div>
 
