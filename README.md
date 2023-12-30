@@ -166,7 +166,7 @@ I also did <strong>small changes</strong> to get all the useful statistics and a
 
 ## Results
 
-The following results are on Pascal VOC dataset that I modified to apply Rayleigh Noise to it and imitate sonar images. I did this because I did found any sonar images dataset to train my model on.
+The following results are on Pascal VOC val dataset that I modified to apply Rayleigh Noise to it and imitate sonar images. I did this because I did found any sonar images dataset to train my model on. Also, I used VGG-16 backbone.
 
 | Catégorie        | Base model (%) | My model (%) |
 |------------------|--------------------|----------------|
