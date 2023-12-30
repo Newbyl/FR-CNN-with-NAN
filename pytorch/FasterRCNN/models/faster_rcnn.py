@@ -127,10 +127,18 @@ class FasterRCNNModel(nn.Module):
       max_proposals_pre_nms = 6000, # test time values
       max_proposals_post_nms = 300
     )
-    classes, box_deltas, _, _ = self._stage3_detector_network(
-      feature_map = feature_map,
-      proposals = proposals
-    )
+    
+    if self.training:
+      classes, box_deltas, _, _ = self._stage3_detector_network(
+        feature_map = feature_map,
+        proposals = proposals
+      )
+      
+    else:
+      classes, box_deltas = self._stage3_detector_network(
+        feature_map = feature_map,
+        proposals = proposals
+      )
 
     return proposals, classes, box_deltas
 

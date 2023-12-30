@@ -105,29 +105,31 @@ class DetectorNetwork(nn.Module):
     #                           #
     #############################
     
-    # numbers of RoI
-    nb_roi = rois.size(dim=0)
+    if self.training:
     
-    # Initialize roi_out_noise
-    rois_noise = t.zeros_like(rois).cuda()
-    
-    for n_roi in range(nb_roi):
-      # generate noise
-      noise_scale = self._noise_predictor(rois[n_roi]).cpu().detach().numpy()
-      # noise = np.random.normal(loc=0, scale=noise_scale[0], size=rois[n_roi].cpu().shape)
+      # numbers of RoI
+      nb_roi = rois.size(dim=0)
       
-      noise = np.random.rayleigh(scale=noise_scale, size=rois[n_roi].cpu().shape)
-      noise = t.from_numpy(noise).cuda()
+      # Initialize roi_out_noise
+      rois_noise = t.zeros_like(rois).cuda()
       
-      # Update roi_out_noise
-      rois_noise[n_roi] = rois[n_roi] + noise
-      
-    # Uncomment to see the RoI with and without noise
-    """
-    if (len(rois) != 0 or len(rois_noise) != 0):
-      save_image(self.conv2(rois_noise[0]).cpu(), 'roi_noise.png')
-          
-      save_image(self.conv2(rois[0]).cpu(), 'roi_out.png')"""
+      for n_roi in range(nb_roi):
+        # generate noise
+        noise_scale = self._noise_predictor(rois[n_roi]).cpu().detach().numpy()
+        # noise = np.random.normal(loc=0, scale=noise_scale[0], size=rois[n_roi].cpu().shape)
+        
+        noise = np.random.rayleigh(scale=noise_scale, size=rois[n_roi].cpu().shape)
+        noise = t.from_numpy(noise).cuda()
+        
+        # Update roi_out_noise
+        rois_noise[n_roi] = rois[n_roi] + noise
+        
+      # Uncomment to see the RoI with and without noise
+      """
+      if (len(rois) != 0 or len(rois_noise) != 0):
+        save_image(self.conv2(rois_noise[0]).cpu(), 'roi_noise.png')
+            
+        save_image(self.conv2(rois[0]).cpu(), 'roi_out.png')"""
     
     ####################################
     #                                  #
@@ -136,19 +138,23 @@ class DetectorNetwork(nn.Module):
     ####################################
     
 
-    # Forward propagate for noise loss
-    y_noise = self._pool_to_feature_vector(rois = rois_noise)
-    classes_raw_noise = self._classifier(y_noise)
-    classes_noise = F.softmax(classes_raw_noise, dim = 1)
-    box_deltas_noise = self._regressor(y_noise)
+      # Forward propagate for noise loss
+      y_noise = self._pool_to_feature_vector(rois = rois_noise)
+      classes_raw_noise = self._classifier(y_noise)
+      classes_noise = F.softmax(classes_raw_noise, dim = 1)
+      box_deltas_noise = self._regressor(y_noise)
     
     # Forward propagate
     y = self._pool_to_feature_vector(rois = rois)
     classes_raw = self._classifier(y)
     classes = F.softmax(classes_raw, dim = 1)
     box_deltas = self._regressor(y)
-
-    return classes, box_deltas, classes_noise, box_deltas_noise
+    
+    if self.training:
+      return classes, box_deltas, classes_noise, box_deltas_noise
+    
+    else:
+      return classes, box_deltas
 
 
 def class_loss(predicted_classes, y_true):
