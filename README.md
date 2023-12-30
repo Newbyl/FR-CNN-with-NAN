@@ -26,7 +26,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project was for a course named "Advanced research project" where we had to choose a paper, make a report about it and implement the main features of it. I choose to start with this <a href="https://github.com/trzy/FasterRCNN">incredible implementation of Faster RCNN</a> in pytorch.
+This project was for a course named <strong>"Advanced research project"</strong> where we had to choose a paper, make a report about it and implement the main features of it. I choose to start with this <a href="https://github.com/trzy/FasterRCNN">incredible implementation of Faster RCNN</a> in pytorch from <strong>Bart Trzynadlowski</strong>.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -44,31 +44,31 @@ This project was for a course named "Advanced research project" where we had to 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To train this model use the following command :
+To <strong>train</strong> this model use the following command :
 
 ```console
 $ python -m pytorch.FasterRCNN --train --learning-rate=1e-3 --weight-decay 1e-4  --epochs=5 --load-from=vgg16_caffe.pth --save-best-to=results_1.pth --checkpoint-dir it_checkpoint
 ```
 
-To get all the option you can use this command :
+To <strong>get all the option</strong> you can use this command :
 
 ```console
 $ python -m pytorch.FasterRCNN --help
 ```
 
-To infer an image through the network use  :
+To <strong>infer</strong> an image through the network use  :
 
 ```console
 $ python -m pytorch.FasterRCNN --load-from=fasterrcnn_pytorch_vgg166.pth --predict-to-file=images_demo/noisy_image.jpg
 ```
 
-It will save the result of the inference in a file called "prediction.png" in your current directory.
+It will <strong>save the result of the inference in a file called "prediction.png"</strong> in your current directory.
 
 
 <!-- What's new ? -->
 ## What's new ?
 
-Following the paper, I implemented the Noise Adversarial Network present I the paper, you can find it in <a href="https://github.com/Newbyl/FR-CNN-with-NAN/blob/main/pytorch/FasterRCNN/models/detector.py"> here </a> named NoisePredictor : 
+Following the paper, I implemented the Noise Adversarial Network, you can find it in <a href="https://github.com/Newbyl/FR-CNN-with-NAN/blob/main/pytorch/FasterRCNN/models/detector.py"> this file </a> named as NoisePredictor : 
 
 ```Py
 class NoisePredictor(nn.Module):
@@ -87,7 +87,7 @@ class NoisePredictor(nn.Module):
         return x.mean().abs()
 ```
 
-You can find its integration in the DetectorNetwork class in the same file : 
+You can find its <strong>integration</strong> in the <strong>DetectorNetwork class</strong> in the same file : 
 
 ```Py
     #############################
@@ -135,7 +135,7 @@ You can find its integration in the DetectorNetwork class in the same file :
       box_deltas_noise = self._regressor(y_noise)
 ```
 
-I also added the Kullback-Leiber loss present in the paper : 
+I also added the <strong>Kullback-Leiber loss</strong> present in the paper : 
 
 ```Py
 def kl_div_loss(original_output, adversarial_output):
@@ -162,7 +162,7 @@ def kl_div_loss(original_output, adversarial_output):
     return Ladv
 ```
 
-I also did small changes to get all the useful statistics and add the new losses to the model.
+I also did <strong>small changes</strong> to get all the useful statistics and add the new losses to the model.
 
 
 ## What I need to improve
