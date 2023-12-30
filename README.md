@@ -206,7 +206,14 @@ I need to optimize the noise generation part, in fact I use Numpy to do so when 
 
 nabyl.quignon@etu.univ-orleans.fr
 
-Project Link: [https://github.com/Newbyl/FR-CNN-with-NAN](https://github.com/Newbyl/FR-CNN-with-NAN)
+## Useful links
+
+More material about the paper can be found at: https://openaccess.thecvf.com/content_WACV_2020/html/Ma_Training_with_Noise_Adversarial_Network_A_Generalization_Method_for_Object_WACV_2020_paper.html
+
+Faster R-CNN paper to understand how everything work :
+https://arxiv.org/pdf/1506.01497.pdf
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
