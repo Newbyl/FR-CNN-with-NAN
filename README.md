@@ -168,6 +168,8 @@ I also did <strong>small changes</strong> to get all the useful statistics and a
 
 The following results are on Pascal VOC val dataset that I modified to apply Rayleigh Noise to it and imitate sonar images. I did this because I did found any sonar images dataset to train my model on. Also, I used VGG-16 backbone.
 
+I trained my model using the hyperparameters present in the paper, a momentum of 0.9 and a weight decay of 0.0001. I did a first pass with normal Pascal VOC training dataset for 5 epochs and a second pass with my modified version of Pascal VOC for 3 epochs.
+
 | Catégorie        | Base model (%) | My model (%) |
 |------------------|--------------------|----------------|
 | bicycle          | 52.8               | **63.9**       |
