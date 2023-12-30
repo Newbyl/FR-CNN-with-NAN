@@ -164,6 +164,34 @@ def kl_div_loss(original_output, adversarial_output):
 
 I also did <strong>small changes</strong> to get all the useful statistics and add the new losses to the model.
 
+## Results
+
+The following results are on Pascal VOC dataset that I modified to apply Rayleigh Noise to it and imitate sonar images. I did this because I did found any sonar images dataset to train my model on.
+
+| Catégorie        | Base model (%) | My model (%) |
+|------------------|--------------------|----------------|
+| bicycle          | 52.8               | **63.9**       |
+| car              | 50.0               | **68.4**       |
+| motorbike        | 47.5               | **58.3**       |
+| cat              | 47.2               | **37.9**       |
+| horse            | 42.7               | **56.4**       |
+| bus              | 33.4               | **46.8**       |
+| dog              | 32.3               | **37.7**       |
+| person           | 32.0               | **57.6**       |
+| diningtable      | 30.7               | **42.6**       |
+| train            | 29.8               | **52.4**       |
+| sheep            | **28.3**            | 24.6           |
+| aeroplane        | 26.4               | **43.1**       |
+| bird             | 25.4               | **31.8**       |
+| sofa             | 21.3               | **44.0**       |
+| cow              | 20.8               | **31.5**       |
+| bottle           | 17.0               | **20.2**       |
+| boat             | 12.4               | **24.7**       |
+| chair            | 10.0               | **24.4**       |
+| tvmonitor        | 6.9                | **47.9**       |
+| pottedplant      | 5.2                | **14.2**       |
+| **Mean Average Precision** | 28.59  | **41.42**  |
+
 
 ## What I need to improve
 
